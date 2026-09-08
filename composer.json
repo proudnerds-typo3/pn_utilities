@@ -1,0 +1,32 @@
+{
+    "name": "proudnerds/pn-utilities",
+    "description": "Additional utilities",
+    "type": "typo3-cms-extension",
+    "license": "GPL-2.0+",
+    "version": "14.3.0",
+    "authors": [
+        {
+            "name": "Proud Nerds",
+            "role": "Developer",
+            "homepage": "https://www.proudnerds.com/"
+        }
+    ],
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "pn_utilities"
+        }
+    },
+    "replace": {
+        "pn_utilities": "self.version",
+        "typo3-ter/pn_utilities": "self.version"
+    },
+    "require": {
+        "php": "8.2.0 - 8.4.99",
+        "typo3/cms-core": "^14"
+    },
+    "autoload": {
+        "psr-4": {
+            "Proudnerds\\Utilities\\": "Classes/"
+        }
+    }
+}

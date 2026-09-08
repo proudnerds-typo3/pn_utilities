@@ -1,0 +1,43 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+<f:layout name="Default" />
+
+<f:section name="Content">
+    <h1><f:translate key="toolsHeader" /></h1>
+	<f:if condition="{page.uid} > 0">
+		<f:then>
+
+			<h2>On page "{page.title} [page:{page.uid}]" and subpages</h2>
+			<div class="table-fit">
+				<table id="typo3-backend-user-list-compare" class="table table-hover">
+					<tbody>
+					<tr>
+						<th class="col-title">Description</th>
+						<th class="col-control">Show list</th>
+						<th class="col-control"></th>
+					</tr>
+					<f:for each="{tools}" key="tool" as="toolTitle">
+						<tr>
+							<td>{toolTitle}</td>
+							<td><f:link.action action="list" arguments="{tool:tool, forReal:0}" title="Show list" class="btn btn-default">Show</f:link.action></td>
+							<td></td>
+						</tr>
+					</f:for>
+
+					</tbody>
+				</table>
+			</div>
+
+		</f:then>
+		<f:else>
+			<p><f:translate key="error.noPageSelected" /></p>
+		</f:else>
+	</f:if>
+
+</f:section>
+
+</html>

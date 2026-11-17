@@ -126,6 +126,9 @@ final class ConvertPowermailFormCommand extends Command
         return $exitCode;
     }
 
+    /**
+     * @param array<string, mixed> $form
+     */
     private function convertForm(array $form, SymfonyStyle $io, bool $force, bool $dryRun, string $formsPath): bool
     {
         $io->section(sprintf('Form %d: %s', $form['uid'], $form['title']));
@@ -317,6 +320,8 @@ final class ConvertPowermailFormCommand extends Command
     /**
      * Find the Powermail plugin (tt_content.powermail_pi1) that references the
      * given form and return its parsed "settings.flexform" array, or null.
+     *
+     * @return array<array-key, mixed>|null
      */
     private function fetchFlexFormConfig(int $formUid): ?array
     {
@@ -397,6 +402,9 @@ final class ConvertPowermailFormCommand extends Command
      * Convert a single Powermail field row to an ext:form renderable.
      * Returns null for field types that have no form-element equivalent
      * (submit, captcha, …).
+     *
+     * @param array<string, mixed> $field
+     * @return array<string, mixed>|null
      */
     private function convertField(array $field, SymfonyStyle $io): ?array
     {
@@ -499,6 +507,8 @@ final class ConvertPowermailFormCommand extends Command
      * Powermail "validation" column -> ext:form validator definition.
      * Conservative mapping; types without a core validator fall back to a
      * RegularExpression. Returns null for "no validation".
+     *
+     * @return array<string, mixed>|null
      */
     private function validationValidator(int $validation): ?array
     {
@@ -515,6 +525,8 @@ final class ConvertPowermailFormCommand extends Command
     /**
      * Parse Powermail option settings (one option per line,
      * "label | value | preselected") into ext:form's value => label map.
+     *
+     * @return array<string, string>
      */
     private function parseOptions(string $settings): array
     {
@@ -533,6 +545,9 @@ final class ConvertPowermailFormCommand extends Command
         return $options;
     }
 
+    /**
+     * @param array<string, mixed> $field
+     */
     private function fieldIdentifier(array $field): string
     {
         $marker = $this->slugify((string)$field['marker']);
@@ -546,6 +561,8 @@ final class ConvertPowermailFormCommand extends Command
     /**
      * Powermail markers frequently already are HTML autocomplete tokens
      * (given-name, family-name, email, street-address …). Pass those through.
+     *
+     * @param array<string, mixed> $field
      */
     private function autocompleteToken(array $field): ?string
     {

@@ -1,13 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" target-language="nl" datatype="plaintext" original="EXT:utilities/Resources/Private/Language/locallang.xlf" date="2012-07-16T10:11:32Z" product-name="utilities">
+	<file source-language="en" target-language="nl" datatype="plaintext" original="EXT:pn_utilities/Resources/Private/Language/locallang.xlf" product-name="pn_utilities">
 		<header/>
 		<body>
-			<trans-unit id="toolsHeader" resname="toolsHeader">
-				<target>Beschikbare tools</target>
+			<trans-unit id="title" resname="title">
+				<source>Pages not edited recently</source>
+				<target>Pagina's die lang niet zijn gewijzigd</target>
 			</trans-unit>
-			<trans-unit id="error.noPageSelected">
-				<target>Geen pagina geselecteerd</target>
+			<trans-unit id="intro" resname="intro">
+				<source>Standard pages on and below "%s" whose page properties and content have not changed in the chosen period.</source>
+				<target>Gewone pagina's op en onder "%s" waarvan de paginaeigenschappen en de inhoud in de gekozen periode niet zijn gewijzigd.</target>
+			</trans-unit>
+			<trans-unit id="limitation" resname="limitation">
+				<source>Records from storage folders, such as news, are not taken into account.</source>
+				<target>Records uit opslagmappen, zoals nieuws, tellen niet mee.</target>
+			</trans-unit>
+			<trans-unit id="error.noPageSelected" resname="error.noPageSelected">
+				<source>Select a page in the page tree.</source>
+				<target>Kies een pagina in de paginaboom.</target>
+			</trans-unit>
+			<trans-unit id="days.label" resname="days.label">
+				<source>Not edited for at least (days)</source>
+				<target>Niet gewijzigd in ten minste (dagen)</target>
+			</trans-unit>
+			<trans-unit id="submit" resname="submit">
+				<source>Show</source>
+				<target>Tonen</target>
+			</trans-unit>
+			<trans-unit id="column.pid" resname="column.pid">
+				<source>Parent page ID</source>
+				<target>ID bovenliggende pagina</target>
+			</trans-unit>
+			<trans-unit id="column.uid" resname="column.uid">
+				<source>Page ID</source>
+				<target>Pagina-ID</target>
+			</trans-unit>
+			<trans-unit id="column.language" resname="column.language">
+				<source>Language ID</source>
+				<target>Taal-ID</target>
+			</trans-unit>
+			<trans-unit id="column.lastChange" resname="column.lastChange">
+				<source>Last change</source>
+				<target>Laatste wijziging</target>
+			</trans-unit>
+			<trans-unit id="column.title" resname="column.title">
+				<source>Page title</source>
+				<target>Paginatitel</target>
+			</trans-unit>
+			<trans-unit id="column.actions" resname="column.actions">
+				<source>Actions</source>
+				<target>Acties</target>
+			</trans-unit>
+			<trans-unit id="hidden" resname="hidden">
+				<source>Hidden</source>
+				<target>Verborgen</target>
+			</trans-unit>
+			<trans-unit id="edit" resname="edit">
+				<source>Edit page "%s"</source>
+				<target>Pagina "%s" bewerken</target>
+			</trans-unit>
+			<trans-unit id="opensInNewTab" resname="opensInNewTab">
+				<source>(opens in a new tab)</source>
+				<target>(opent in een nieuw tabblad)</target>
+			</trans-unit>
+			<trans-unit id="total" resname="total">
+				<source>%1$d pages not edited in %2$d days</source>
+				<target>%1$d pagina's niet gewijzigd in %2$d dagen</target>
+			</trans-unit>
+			<trans-unit id="none" resname="none">
+				<source>No pages found.</source>
+				<target>Geen pagina's gevonden.</target>
 			</trans-unit>
 		</body>
 	</file>

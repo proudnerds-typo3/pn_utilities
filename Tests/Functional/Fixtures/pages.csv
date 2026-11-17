@@ -1,0 +1,16 @@
+"pages"
+,"uid","pid","title","doktype","hidden","deleted","sys_language_uid","l10n_parent","sorting","tstamp"
+,1,0,"Root",1,0,0,0,0,1,1600000000
+,2,1,"Stale page",1,0,0,0,0,2,1600000000
+,3,1,"Recent content",1,0,0,0,0,3,1600000000
+,4,1,"Hidden stale page",1,1,0,0,0,4,1600000000
+,5,1,"Deleted page",1,0,1,0,0,5,1600000000
+,6,1,"Folder",254,0,0,0,0,6,1600000000
+,7,6,"Page in folder",1,0,0,0,0,7,1600000000
+,8,1,"Recently edited page",1,0,0,0,0,8,1750000000
+,9,1,"Translation of 2 with recent content",1,0,0,1,2,9,1600000000
+,10,1,"Translation of 3 without content",1,0,0,1,3,10,1600000000
+,11,99,"Outside the tree",1,0,0,0,0,11,1600000000
+,12,1,"All-languages content",1,0,0,0,0,12,1600000000
+,13,1,"Hidden recent content",1,0,0,0,0,13,1600000000
+,14,1,"Shortcut",4,0,0,0,0,14,1600000000

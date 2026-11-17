@@ -1,122 +1,94 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Proudnerds\Utilities\Controller;
 
+use Proudnerds\Utilities\Domain\StalePage;
+use Proudnerds\Utilities\Service\StalePagesFinder;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Backend\Utility\BackendUtility as BackendUtilityCore;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Http\ForwardResponse;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 #[AsController]
-class ToolController extends ActionController
+final class ToolController extends ActionController
 {
-    protected $pageUid = 0;
+    public const DEFAULT_DAYS = 182;
+    public const MAX_DAYS = 36500;
 
-    protected $pageInformation;
+    public function __construct(
+        private readonly ModuleTemplateFactory $moduleTemplateFactory,
+        private readonly StalePagesFinder $stalePagesFinder,
+        private readonly SiteFinder $siteFinder,
+        private readonly Context $context,
+    ) {}
 
-    protected $toolsAvailable = [
-        'PagesNotEditedSince',
-    ];
-
-    public function __construct(protected ModuleTemplateFactory $moduleTemplateFactory) {}
-
-    public function initializeAction(): void
+    public static function normalizeDays(mixed $value): int
     {
-        $this->pageUid = $this->request->hasArgument('id') ? (int)$this->request->getQueryParams()['id'] : 0;
-        $this->pageInformation = BackendUtilityCore::readPageAccess($this->pageUid, '');
-        parent::initializeAction();
+        if (is_int($value) || (is_string($value) && is_numeric($value))) {
+            return min(self::MAX_DAYS, max(1, (int)$value));
+        }
+        return self::DEFAULT_DAYS;
     }
 
     public function indexAction(): ResponseInterface
     {
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $page = $this->readSelectedPage();
+        $days = self::normalizeDays($this->request->hasArgument('days') ? $this->request->getArgument('days') : null);
 
-        $tools = [];
-        foreach ($this->toolsAvailable as $tool) {
-            $toolClass = $this->getToolClass($tool);
-            $title = $toolClass->getTitle();
-            $tools[$tool] = $title;
+        $rows = [];
+        if ($page !== null) {
+            $now = (int)$this->context->getPropertyFromAspect('date', 'timestamp');
+            foreach ($this->stalePagesFinder->find((int)$page['uid'], $now - $days * 86400) as $stalePage) {
+                $rows[] = ['page' => $stalePage, 'uri' => $this->buildFrontendUri($stalePage)];
+            }
         }
 
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-        // Adding title, menus, buttons, etc. using $moduleTemplate ...
         $moduleTemplate->assignMultiple([
-            'tools' => $tools,
-            'pageUid' => $this->pageUid,
-            'page' => $this->pageInformation,
+            'page' => $page,
+            'days' => $days,
+            'rows' => $rows,
         ]);
         return $moduleTemplate->renderResponse('Tool/Index');
     }
 
     /**
-     * @param $tool
-     * @return object|\Proudnerds\Utilities\Tools\BaseTool
+     * @return array<string, mixed>|null
      */
-    public function getToolClass($tool)
+    private function readSelectedPage(): ?array
     {
-        return GeneralUtility::makeInstance('Proudnerds\\Utilities\\Tools\\' . $tool);
+        $body = $this->request->getParsedBody();
+        $pageId = (int)($this->request->getQueryParams()['id'] ?? (is_array($body) ? ($body['id'] ?? 0) : 0));
+        if ($pageId <= 0) {
+            return null;
+        }
+        $page = BackendUtility::readPageAccess($pageId, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
+        return is_array($page) ? $page : null;
     }
 
-    public function listAction(): ResponseInterface
+    private function buildFrontendUri(StalePage $page): ?string
     {
-        $tool = $this->request->getArgument('tool');
-        if (! in_array($tool, $this->toolsAvailable)) {
-            return new ForwardResponse('index');
+        try {
+            $site = $this->siteFinder->getSiteByPageId($page->defaultLanguageUid);
+            return (string)$site->getRouter()->generateUri(
+                $page->defaultLanguageUid,
+                ['_language' => $site->getLanguageById($page->languageId)],
+            );
+        } catch (SiteNotFoundException|\InvalidArgumentException) {
+            return null;
         }
-
-        return new ForwardResponse(lcfirst((string)$tool));
     }
 
-    public function pagesNotEditedSinceAction(): ResponseInterface
+    private function getBackendUser(): BackendUserAuthentication
     {
-
-        $tool = 'PagesNotEditedSince';
-        $toolClass = $this->getToolClass($tool);
-
-        $forReal = (bool)($this->request->hasArgument('forReal') ? $this->request->getArgument('forReal') : false);
-
-        $toolTitle = $toolClass->getTitle();
-
-        $result = $toolClass->executeUpdate($this->pageUid, $forReal);
-
-        foreach ($result['errors'] as $error) {
-            $this->addFlashMessage($error['text'], 'Pid ' . $error['pid'] . ' - ' . $error['tableUid'], ContextualFeedbackSeverity::ERROR);
-        }
-
-        if (count($result['errors']) == 0) {
-            $this->addFlashMessage('', $forReal ? 'Update successfully performed' : 'Listing completed', ContextualFeedbackSeverity::OK);
-        }
-
-        $baseUrl = $this->getBaseUrlByPageId($this->pageUid);
-
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-        // Adding title, menus, buttons, etc. using $moduleTemplate ...
-        $moduleTemplate->assignMultiple([
-            'baseUrl' => $baseUrl,
-            'tool' => $tool,
-            'toolTitle' => $toolTitle,
-            'pageUid' => $this->pageUid,
-            'page' => $this->pageInformation,
-            'result' => $result,
-            'forReal' => $forReal,
-        ]);
-        return $moduleTemplate->renderResponse('Tool/PagesNotEditedSince');
-    }
-
-    public function getBaseUrlByPageId($pageId)
-    {
-        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
-        $siteConfiguration = $siteFinder->getSiteByPageId($pageId);
-        $base = $siteConfiguration->getBase();
-        $scheme = $base->getScheme();
-        $host = $base->getHost();
-        $port = $base->getPort();
-        $path = $base->getPath();
-        $baseUrl = $scheme . '://' . $host . ($port ? ':' . $port : '');
-        return $baseUrl;
+        return $GLOBALS['BE_USER'];
     }
 }

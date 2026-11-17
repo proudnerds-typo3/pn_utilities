@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="nl" datatype="plaintext" original="messages" date="2026-10-29T00:00:00Z" product-name="pn_utilities">
+		<header/>
+		<body>
+		<trans-unit id="manual.title">
+			<source>Tools</source>
+			<target>Tools</target>
+		</trans-unit>
+		<trans-unit id="manual.description">
+			<source>How to use the Tools module, such as the list of pages not edited for six months.</source>
+			<target>Zo gebruik je de module Tools, zoals de lijst met pagina's die een half jaar niet zijn gewijzigd.</target>
+		</trans-unit>
+		</body>
+	</file>
+</xliff>

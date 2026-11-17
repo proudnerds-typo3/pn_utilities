@@ -8,3 +8,21 @@ services:
         resource: '../Classes/*'
         autowire: true
         public: true
+
+    pn_utilities.manual:
+        class: 'ProudNerds\PnBackendManual\Widgets\ManualWidget'
+        autowire: true
+        arguments:
+            $options:
+                file: 'EXT:pn_utilities/Resources/Private/Manual/UtilitiesManual.md'
+                numbered: true
+                contentsDepth: 2
+        tags:
+            - name: dashboard.widget
+              identifier: 'pnUtilitiesManual'
+              groupNames: 'documentation'
+              title: 'LLL:EXT:pn_utilities/Resources/Private/Language/locallang_be.xlf:manual.title'
+              description: 'LLL:EXT:pn_utilities/Resources/Private/Language/locallang_be.xlf:manual.description'
+              iconIdentifier: 'content-book'
+              height: 'medium'
+              width: 'medium'

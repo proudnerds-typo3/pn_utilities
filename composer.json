@@ -57,7 +57,8 @@
     "extra": {
         "typo3/cms": {
             "extension-key": "pn_utilities",
-            "version": "14.3.1",
+            "skip-ter-packagist-import": true,
+            "version": "14.3.2",
             "Package": {
                 "providesPackages": {}
             },

@@ -7,6 +7,12 @@ Versions follow the TYPO3 core version the extension targets.
 
 ## [Unreleased]
 
+## [14.3.2] – 2026-11-25
+
+### Changed
+
+- `composer.json` sets `extra.typo3/cms.skip-ter-packagist-import`.
+
 ## [14.3.1] – 2026-11-25
 
 ### Security
@@ -48,6 +54,7 @@ typo3-seed installation.
 - Command `pn:powermail:convert`
 - Editor manual as a dashboard widget
 
-[Unreleased]: https://github.com/proudnerds-typo3/pn_utilities/compare/14.3.1...HEAD
+[Unreleased]: https://github.com/proudnerds-typo3/pn_utilities/compare/14.3.2...HEAD
+[14.3.2]: https://github.com/proudnerds-typo3/pn_utilities/compare/14.3.1...14.3.2
 [14.3.1]: https://github.com/proudnerds-typo3/pn_utilities/compare/14.3.0...14.3.1
 [14.3.0]: https://github.com/proudnerds-typo3/pn_utilities/releases/tag/14.3.0

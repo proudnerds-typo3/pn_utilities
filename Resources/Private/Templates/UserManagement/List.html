@@ -1,0 +1,133 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+    <h1><f:translate key="users.title" /></h1>
+    <p><f:translate key="users.intro" /></p>
+
+    <f:if condition="!{passwordResetEnabled}">
+        <f:be.infobox state="1"><f:translate key="users.passwordResetDisabled" /></f:be.infobox>
+    </f:if>
+
+    <f:if condition="{groups}">
+        <f:then>
+            <p>
+                <f:link.action action="new" class="btn btn-primary">
+                    <core:icon identifier="actions-plus" />
+                    <f:translate key="users.new" />
+                </f:link.action>
+            </p>
+        </f:then>
+        <f:else>
+            <f:be.infobox state="1"><f:translate key="users.noAssignableGroups" /></f:be.infobox>
+        </f:else>
+    </f:if>
+
+    <f:if condition="{users}">
+        <f:then>
+            <div class="table-fit">
+                <table class="table table-striped table-hover">
+                    <caption class="visually-hidden"><f:translate key="users.title" /></caption>
+                    <thead>
+                        <tr>
+                            <th scope="col" class="col-title"><f:translate key="users.field.username" /></th>
+                            <th scope="col"><f:translate key="users.field.realName" /></th>
+                            <th scope="col"><f:translate key="users.field.email" /></th>
+                            <th scope="col"><f:translate key="users.field.groups" /></th>
+                            <th scope="col"><f:translate key="users.column.lastLogin" /></th>
+                            <th scope="col" class="col-control"><f:translate key="users.column.actions" /></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <f:for each="{users}" as="user">
+                            <tr>
+                                <th scope="row" class="col-title">
+                                    {user.username}
+                                    <f:if condition="{user.disabled}">
+                                        <span class="badge badge-warning"><f:translate key="users.disabled" /></span>
+                                    </f:if>
+                                </th>
+                                <td>{user.realName}</td>
+                                <td>{user.email}</td>
+                                <td>
+                                    <f:for each="{user.groupUids}" as="groupUid" iteration="it">
+                                        <f:variable name="groupKey">{groupUid}</f:variable>{groups.{groupKey}}<f:if condition="!{it.isLast}">, </f:if>
+                                    </f:for>
+                                </td>
+                                <td>
+                                    <f:if condition="{user.lastLogin}">
+                                        <f:then><f:format.date format="d-m-Y H:i">{user.lastLogin}</f:format.date></f:then>
+                                        <f:else><f:translate key="users.neverLoggedIn" /></f:else>
+                                    </f:if>
+                                </td>
+                                <td class="col-control">
+                                    <div class="btn-group" role="group" aria-label="{f:translate(key: 'users.column.actions')}: {user.username}">
+                                        <f:variable name="editLabel"><f:translate key="users.edit" arguments="{0: user.username}" /></f:variable>
+                                        <f:link.action action="edit" arguments="{uid: user.uid}" class="btn btn-default" title="{editLabel}">
+                                            <core:icon identifier="actions-open" />
+                                            <span class="visually-hidden">{editLabel}</span>
+                                        </f:link.action>
+
+                                        <f:if condition="{user.disabled}">
+                                            <f:then>
+                                                <f:variable name="toggleAction">enable</f:variable>
+                                                <f:variable name="toggleIcon">actions-edit-unhide</f:variable>
+                                                <f:variable name="toggleLabel"><f:translate key="users.enable" arguments="{0: user.username}" /></f:variable>
+                                            </f:then>
+                                            <f:else>
+                                                <f:variable name="toggleAction">disable</f:variable>
+                                                <f:variable name="toggleIcon">actions-edit-hide</f:variable>
+                                                <f:variable name="toggleLabel"><f:translate key="users.disable" arguments="{0: user.username}" /></f:variable>
+                                            </f:else>
+                                        </f:if>
+                                        <f:form action="{toggleAction}" method="post" arguments="{uid: user.uid}" class="d-inline">
+                                            <button type="submit" class="btn btn-default" title="{toggleLabel}">
+                                                <core:icon identifier="{toggleIcon}" />
+                                                <span class="visually-hidden">{toggleLabel}</span>
+                                            </button>
+                                        </f:form>
+
+                                        <f:if condition="{passwordResetEnabled} && !{user.disabled} && {user.email}">
+                                            <f:variable name="resetLabel"><f:translate key="users.sendPasswordReset" arguments="{0: user.username}" /></f:variable>
+                                            <f:form action="sendPasswordReset" method="post" arguments="{uid: user.uid}" class="d-inline">
+                                                <button type="submit" class="btn btn-default" title="{resetLabel}">
+                                                    <core:icon identifier="actions-envelope" />
+                                                    <span class="visually-hidden">{resetLabel}</span>
+                                                </button>
+                                            </f:form>
+                                        </f:if>
+
+                                        <f:variable name="deleteLabel"><f:translate key="users.delete" arguments="{0: user.username}" /></f:variable>
+                                        <f:form action="delete" method="post" arguments="{uid: user.uid}" class="d-inline">
+                                            <button
+                                                type="submit"
+                                                class="btn btn-default t3js-modal-trigger"
+                                                title="{deleteLabel}"
+                                                data-severity="warning"
+                                                data-title="{deleteLabel}"
+                                                data-content="{f:translate(key: 'users.delete.confirm', arguments: {0: user.username})}"
+                                                data-button-close-text="{f:translate(key: 'users.cancel')}"
+                                                data-button-ok-text="{f:translate(key: 'users.delete.ok')}">
+                                                <core:icon identifier="actions-delete" />
+                                                <span class="visually-hidden">{deleteLabel}</span>
+                                            </button>
+                                        </f:form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </f:for>
+                    </tbody>
+                </table>
+            </div>
+        </f:then>
+        <f:else>
+            <p><f:translate key="users.none" /></p>
+        </f:else>
+    </f:if>
+</f:section>
+
+</html>

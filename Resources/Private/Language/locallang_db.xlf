@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:pn_utilities/Resources/Private/Language/locallang_db.xlf" product-name="pn_utilities">
+		<header/>
+		<body>
+			<trans-unit id="be_groups.tx_pnutilities_assignable" resname="be_groups.tx_pnutilities_assignable">
+				<source>Assignable in user management</source>
+			</trans-unit>
+			<trans-unit id="be_groups.tx_pnutilities_assignable.description" resname="be_groups.tx_pnutilities_assignable.description">
+				<source>Users with access to the "Backend users" module can give this group to users, and manage every user whose groups are all assignable. They get all rights of this group and its subgroups, so only mark groups that grant no more than you want them to hand out.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

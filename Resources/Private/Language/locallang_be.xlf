@@ -7,7 +7,7 @@
 			<source>Tools</source>
 		</trans-unit>
 		<trans-unit id="manual.description">
-			<source>How to use the Tools module, such as the list of pages not edited for six months.</source>
+			<source>How to use the Tools module and the Backend users module.</source>
 		</trans-unit>
 		</body>
 	</file>

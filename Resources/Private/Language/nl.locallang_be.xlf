@@ -8,8 +8,8 @@
 			<target>Tools</target>
 		</trans-unit>
 		<trans-unit id="manual.description">
-			<source>How to use the Tools module, such as the list of pages not edited for six months.</source>
-			<target>Zo gebruik je de module Tools, zoals de lijst met pagina's die een half jaar niet zijn gewijzigd.</target>
+			<source>How to use the Tools module and the Backend users module.</source>
+			<target>Zo gebruik je de module Tools en de module Backend-gebruikers.</target>
 		</trans-unit>
 		</body>
 	</file>

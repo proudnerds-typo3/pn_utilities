@@ -1,13 +1,16 @@
 ---
-version: '2.0'
-date: '2026-11-17'
+version: '2.1'
+date: '2026-11-25'
 ---
 
 # Tools
 
-De module **Content > Tools** bevat hulpmiddelen voor het beheer van de website. Alleen
-beheerders (admins) zien deze module. Er is op dit moment één tool: een lijst met
-pagina's die lang niet zijn gewijzigd.
+Deze extensie bevat twee hulpmiddelen:
+
+- **Content > Tools**, met een lijst van pagina's die lang niet zijn gewijzigd. Alleen
+  beheerders (admins) zien deze module.
+- **Administration > Backend-gebruikers**, waarmee gebruikers zonder adminrechten andere
+  backend-gebruikers kunnen beheren.
 
 ## Pagina's die lang niet zijn gewijzigd
 
@@ -59,3 +62,50 @@ Boven de tabel staat hoeveel pagina's in de gekozen termijn niet zijn gewijzigd.
 De lijst verandert zelf niets aan de pagina's. Loop de pagina's na en beslis per
 pagina of de inhoud nog klopt. Een pagina verdwijnt uit de lijst zodra je de
 paginaeigenschappen of een inhoudselement op de pagina wijzigt en opslaat.
+
+## Backend-gebruikers beheren
+
+Met de module **Administration > Backend-gebruikers** maak je backend-gebruikers aan,
+pas je ze aan, schakel je ze uit en verwijder je ze. Je hebt er geen adminrechten voor
+nodig.
+
+### Instellen (door een beheerder)
+
+1. Open de groepen die gebruikersbeheerders mogen uitdelen, bijvoorbeeld **Redacteur**.
+   Zet op het tabblad **General** (Algemeen) het vinkje **Toewijsbaar in gebruikersbeheer** aan.
+   Wie zo'n groep krijgt, krijgt alle rechten van die groep en van haar subgroepen.
+2. Geef de groep van de gebruikersbeheerders toegang tot de module
+   **Backend-gebruikers** (tabblad **Module Permissions**). Markeer die groep zelf niet als
+   toewijsbaar, tenzij gebruikersbeheerders andere gebruikersbeheerders mogen aanmaken.
+3. Controleer dat de installatie e-mail kan versturen. Nieuwe gebruikers stellen hun
+   wachtwoord in via een link in hun mailbox.
+
+### Welke gebruikers je ziet
+
+Je ziet alleen gebruikers van wie **alle** groepen toewijsbaar zijn. Beheerders (admins),
+gebruikers zonder groep, gebruikers met een groep die niet toewijsbaar is en je eigen
+account staan niet in de lijst en kun je niet aanpassen.
+
+### Een gebruiker aanmaken
+
+1. Klik op **Nieuwe gebruiker**.
+2. Vul een gebruikersnaam, naam en e-mailadres in en kies een of meer groepen. Elk
+   e-mailadres kan maar bij één gebruiker horen.
+3. Klik op **Opslaan**. De nieuwe gebruiker krijgt een e-mail met een link om zelf een
+   wachtwoord in te stellen. Die link is twee uur geldig.
+
+Is de link verlopen, klik dan in de lijst op de envelop om een nieuwe link te sturen.
+
+### Een gebruiker aanpassen, uitschakelen of verwijderen
+
+In de kolom **Acties** staan per gebruiker:
+
+| Knop | Wat hij doet |
+| --- | --- |
+| Potlood | Naam, e-mailadres en groepen aanpassen. De gebruikersnaam blijft gelijk. |
+| Schakelaar | De gebruiker uit- of inschakelen. Een uitgeschakelde gebruiker kan niet inloggen. |
+| Envelop | Een nieuwe link sturen om een wachtwoord in te stellen |
+| Prullenbak | De gebruiker verwijderen, na een bevestiging |
+
+Alle wijzigingen komen in het logboek van TYPO3 (module **Log**), met de naam van wie
+ze heeft gedaan.

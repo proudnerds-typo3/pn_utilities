@@ -71,6 +71,194 @@
 				<source>No pages found.</source>
 				<target>Geen pagina's gevonden.</target>
 			</trans-unit>
+			<trans-unit id="users.title" resname="users.title">
+				<source>Backend users</source>
+				<target>Backend-gebruikers</target>
+			</trans-unit>
+			<trans-unit id="users.intro" resname="users.intro">
+				<source>Create and manage backend users. You only see users whose groups are all marked as assignable by an administrator.</source>
+				<target>Maak backend-gebruikers aan en beheer ze. Je ziet alleen gebruikers van wie alle groepen door een beheerder als toewijsbaar zijn gemarkeerd.</target>
+			</trans-unit>
+			<trans-unit id="users.passwordResetDisabled" resname="users.passwordResetDisabled">
+				<source>Password reset by email is switched off in this installation ([BE][passwordReset]). New users cannot set a password until an administrator switches it on.</source>
+				<target>Wachtwoord herstellen via e-mail staat uit in deze installatie ([BE][passwordReset]). Nieuwe gebruikers kunnen pas een wachtwoord instellen als een beheerder dit aanzet.</target>
+			</trans-unit>
+			<trans-unit id="users.noAssignableGroups" resname="users.noAssignableGroups">
+				<source>No group is marked as assignable yet. An administrator can do this in the group record, with "Assignable in user management".</source>
+				<target>Er is nog geen groep als toewijsbaar gemarkeerd. Een beheerder doet dit in het groepsrecord, met "Toewijsbaar in gebruikersbeheer".</target>
+			</trans-unit>
+			<trans-unit id="users.new" resname="users.new">
+				<source>New user</source>
+				<target>Nieuwe gebruiker</target>
+			</trans-unit>
+			<trans-unit id="users.new.intro" resname="users.new.intro">
+				<source>The new user receives an email with a link to set a password. The link is valid for two hours.</source>
+				<target>De nieuwe gebruiker krijgt een e-mail met een link om een wachtwoord in te stellen. De link is twee uur geldig.</target>
+			</trans-unit>
+			<trans-unit id="users.none" resname="users.none">
+				<source>No users found.</source>
+				<target>Geen gebruikers gevonden.</target>
+			</trans-unit>
+			<trans-unit id="users.field.username" resname="users.field.username">
+				<source>Username</source>
+				<target>Gebruikersnaam</target>
+			</trans-unit>
+			<trans-unit id="users.field.username.help" resname="users.field.username.help">
+				<source>Lowercase, no spaces. Cannot be changed later.</source>
+				<target>Kleine letters, geen spaties. Kan later niet worden gewijzigd.</target>
+			</trans-unit>
+			<trans-unit id="users.field.username.readonly" resname="users.field.username.readonly">
+				<source>The username cannot be changed.</source>
+				<target>De gebruikersnaam kan niet worden gewijzigd.</target>
+			</trans-unit>
+			<trans-unit id="users.field.realName" resname="users.field.realName">
+				<source>Name</source>
+				<target>Naam</target>
+			</trans-unit>
+			<trans-unit id="users.field.email" resname="users.field.email">
+				<source>Email address</source>
+				<target>E-mailadres</target>
+			</trans-unit>
+			<trans-unit id="users.field.email.help" resname="users.field.email.help">
+				<source>The link to set a password is sent to this address. Each address can be used by one user only.</source>
+				<target>De link om een wachtwoord in te stellen gaat naar dit adres. Elk adres kan maar bij één gebruiker horen.</target>
+			</trans-unit>
+			<trans-unit id="users.field.groups" resname="users.field.groups">
+				<source>Groups</source>
+				<target>Groepen</target>
+			</trans-unit>
+			<trans-unit id="users.field.groups.help" resname="users.field.groups.help">
+				<source>The user gets the rights of every group selected here.</source>
+				<target>De gebruiker krijgt de rechten van elke groep die je hier kiest.</target>
+			</trans-unit>
+			<trans-unit id="users.column.lastLogin" resname="users.column.lastLogin">
+				<source>Last login</source>
+				<target>Laatst ingelogd</target>
+			</trans-unit>
+			<trans-unit id="users.column.actions" resname="users.column.actions">
+				<source>Actions</source>
+				<target>Acties</target>
+			</trans-unit>
+			<trans-unit id="users.neverLoggedIn" resname="users.neverLoggedIn">
+				<source>Never</source>
+				<target>Nooit</target>
+			</trans-unit>
+			<trans-unit id="users.disabled" resname="users.disabled">
+				<source>Disabled</source>
+				<target>Uitgeschakeld</target>
+			</trans-unit>
+			<trans-unit id="users.edit" resname="users.edit">
+				<source>Edit %s</source>
+				<target>%s bewerken</target>
+			</trans-unit>
+			<trans-unit id="users.enable" resname="users.enable">
+				<source>Enable %s</source>
+				<target>%s inschakelen</target>
+			</trans-unit>
+			<trans-unit id="users.disable" resname="users.disable">
+				<source>Disable %s</source>
+				<target>%s uitschakelen</target>
+			</trans-unit>
+			<trans-unit id="users.sendPasswordReset" resname="users.sendPasswordReset">
+				<source>Send %s a link to set a new password</source>
+				<target>%s een link sturen om een nieuw wachtwoord in te stellen</target>
+			</trans-unit>
+			<trans-unit id="users.delete" resname="users.delete">
+				<source>Delete %s</source>
+				<target>%s verwijderen</target>
+			</trans-unit>
+			<trans-unit id="users.delete.confirm" resname="users.delete.confirm">
+				<source>Delete user "%s"? The user can no longer log in. An administrator can restore the account.</source>
+				<target>Gebruiker "%s" verwijderen? De gebruiker kan dan niet meer inloggen. Een beheerder kan het account terugzetten.</target>
+			</trans-unit>
+			<trans-unit id="users.delete.ok" resname="users.delete.ok">
+				<source>Delete</source>
+				<target>Verwijderen</target>
+			</trans-unit>
+			<trans-unit id="users.save" resname="users.save">
+				<source>Save</source>
+				<target>Opslaan</target>
+			</trans-unit>
+			<trans-unit id="users.cancel" resname="users.cancel">
+				<source>Cancel</source>
+				<target>Annuleren</target>
+			</trans-unit>
+			<trans-unit id="users.error.summary" resname="users.error.summary">
+				<source>The user was not saved. Correct the following:</source>
+				<target>De gebruiker is niet opgeslagen. Verbeter het volgende:</target>
+			</trans-unit>
+			<trans-unit id="users.error.username.required" resname="users.error.username.required">
+				<source>Enter a username.</source>
+				<target>Vul een gebruikersnaam in.</target>
+			</trans-unit>
+			<trans-unit id="users.error.username.invalid" resname="users.error.username.invalid">
+				<source>The username may not contain spaces or start with an underscore.</source>
+				<target>De gebruikersnaam mag geen spaties bevatten en niet met een underscore (_) beginnen.</target>
+			</trans-unit>
+			<trans-unit id="users.error.username.tooLong" resname="users.error.username.tooLong">
+				<source>The username may be at most 50 characters long.</source>
+				<target>De gebruikersnaam mag maximaal 50 tekens lang zijn.</target>
+			</trans-unit>
+			<trans-unit id="users.error.username.taken" resname="users.error.username.taken">
+				<source>This username is already in use. Choose another one.</source>
+				<target>Deze gebruikersnaam is al in gebruik. Kies een andere.</target>
+			</trans-unit>
+			<trans-unit id="users.error.realName.tooLong" resname="users.error.realName.tooLong">
+				<source>The name may be at most 80 characters long.</source>
+				<target>De naam mag maximaal 80 tekens lang zijn.</target>
+			</trans-unit>
+			<trans-unit id="users.error.email.required" resname="users.error.email.required">
+				<source>Enter an email address.</source>
+				<target>Vul een e-mailadres in.</target>
+			</trans-unit>
+			<trans-unit id="users.error.email.invalid" resname="users.error.email.invalid">
+				<source>Enter a valid email address, such as name@example.com.</source>
+				<target>Vul een geldig e-mailadres in, zoals naam@voorbeeld.nl.</target>
+			</trans-unit>
+			<trans-unit id="users.error.email.taken" resname="users.error.email.taken">
+				<source>This email address already belongs to another user. Use a different address.</source>
+				<target>Dit e-mailadres hoort al bij een andere gebruiker. Gebruik een ander adres.</target>
+			</trans-unit>
+			<trans-unit id="users.error.groups.required" resname="users.error.groups.required">
+				<source>Select at least one group.</source>
+				<target>Kies ten minste één groep.</target>
+			</trans-unit>
+			<trans-unit id="users.error.groups.invalid" resname="users.error.groups.invalid">
+				<source>One of the selected groups cannot be assigned. Reload the page and try again.</source>
+				<target>Een van de gekozen groepen kan niet worden toegewezen. Laad de pagina opnieuw en probeer het nog eens.</target>
+			</trans-unit>
+			<trans-unit id="users.message.created" resname="users.message.created">
+				<source>User "%s" was created.</source>
+				<target>Gebruiker "%s" is aangemaakt.</target>
+			</trans-unit>
+			<trans-unit id="users.message.updated" resname="users.message.updated">
+				<source>User "%s" was saved.</source>
+				<target>Gebruiker "%s" is opgeslagen.</target>
+			</trans-unit>
+			<trans-unit id="users.message.disabled" resname="users.message.disabled">
+				<source>User "%s" was disabled and can no longer log in.</source>
+				<target>Gebruiker "%s" is uitgeschakeld en kan niet meer inloggen.</target>
+			</trans-unit>
+			<trans-unit id="users.message.enabled" resname="users.message.enabled">
+				<source>User "%s" was enabled.</source>
+				<target>Gebruiker "%s" is ingeschakeld.</target>
+			</trans-unit>
+			<trans-unit id="users.message.deleted" resname="users.message.deleted">
+				<source>User "%s" was deleted.</source>
+				<target>Gebruiker "%s" is verwijderd.</target>
+			</trans-unit>
+			<trans-unit id="users.message.resetSent" resname="users.message.resetSent">
+				<source>An email with a link to set a password was requested for %s.</source>
+				<target>Er is een e-mail met een link om een wachtwoord in te stellen aangevraagd voor %s.</target>
+			</trans-unit>
+			<trans-unit id="users.message.resetUnavailable" resname="users.message.resetUnavailable">
+				<source>No email was sent to %s: password reset is switched off, or the user is disabled.</source>
+				<target>Er is geen e-mail verstuurd naar %s: wachtwoord herstellen staat uit, of de gebruiker is uitgeschakeld.</target>
+			</trans-unit>
+			<trans-unit id="users.message.notFound" resname="users.message.notFound">
+				<source>This user does not exist or you may not manage it.</source>
+				<target>Deze gebruiker bestaat niet of je mag deze niet beheren.</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

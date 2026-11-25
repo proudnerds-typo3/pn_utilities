@@ -1,0 +1,111 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+    <f:if condition="{user}">
+        <f:then>
+            <h1><f:translate key="users.edit" arguments="{0: user.username}" /></h1>
+            <f:variable name="formAction">update</f:variable>
+        </f:then>
+        <f:else>
+            <h1><f:translate key="users.new" /></h1>
+            <p><f:translate key="users.new.intro" /></p>
+            <f:variable name="formAction">create</f:variable>
+        </f:else>
+    </f:if>
+
+    <f:if condition="{errors}">
+        <div class="alert alert-danger" role="alert">
+            <p><f:translate key="users.error.summary" /></p>
+            <ul class="mb-0">
+                <f:for each="{errors}" key="field" as="error">
+                    <li><a href="#pn-user-{field}"><f:translate key="users.error.{field}.{error}" /></a></li>
+                </f:for>
+            </ul>
+        </div>
+    </f:if>
+
+    <f:form action="{formAction}" method="post" arguments="{formArguments}">
+        <div class="form-group mb-3">
+            <label for="pn-user-username" class="form-label"><f:translate key="users.field.username" /></label>
+            <f:if condition="{user}">
+                <f:then>
+                    <input type="text" id="pn-user-username" class="form-control" value="{user.username}" readonly aria-describedby="pn-user-username-help" />
+                    <p id="pn-user-username-help" class="form-text"><f:translate key="users.field.username.readonly" /></p>
+                </f:then>
+                <f:else>
+                    <f:form.textfield
+                        name="user[username]"
+                        id="pn-user-username"
+                        value="{input.username}"
+                        class="form-control{f:if(condition: errors.username, then: ' is-invalid')}"
+                        required="true"
+                        additionalAttributes="{maxlength: 50, autocomplete: 'off', spellcheck: 'false', 'aria-describedby': '{f:render(section: \'DescribedBy\', arguments: {field: \'username\', errors: errors, help: 1})}'}" />
+                    <f:render section="Error" arguments="{field: 'username', errors: errors}" />
+                    <p id="pn-user-username-help" class="form-text"><f:translate key="users.field.username.help" /></p>
+                </f:else>
+            </f:if>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="pn-user-realName" class="form-label"><f:translate key="users.field.realName" /></label>
+            <f:form.textfield
+                name="user[realName]"
+                id="pn-user-realName"
+                value="{input.realName}"
+                class="form-control{f:if(condition: errors.realName, then: ' is-invalid')}"
+                additionalAttributes="{maxlength: 80, autocomplete: 'off', 'aria-describedby': '{f:render(section: \'DescribedBy\', arguments: {field: \'realName\', errors: errors})}'}" />
+            <f:render section="Error" arguments="{field: 'realName', errors: errors}" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="pn-user-email" class="form-label"><f:translate key="users.field.email" /></label>
+            <f:form.textfield
+                type="email"
+                name="user[email]"
+                id="pn-user-email"
+                value="{input.email}"
+                class="form-control{f:if(condition: errors.email, then: ' is-invalid')}"
+                required="true"
+                additionalAttributes="{maxlength: 255, autocomplete: 'off', 'aria-describedby': '{f:render(section: \'DescribedBy\', arguments: {field: \'email\', errors: errors, help: 1})}'}" />
+            <f:render section="Error" arguments="{field: 'email', errors: errors}" />
+            <p id="pn-user-email-help" class="form-text"><f:translate key="users.field.email.help" /></p>
+        </div>
+
+        <fieldset class="form-group mb-3" id="pn-user-groups" tabindex="-1" aria-describedby="{f:render(section: 'DescribedBy', arguments: {field: 'groups', errors: errors, help: 1})}">
+            <legend class="form-label fs-6"><f:translate key="users.field.groups" /></legend>
+            <p id="pn-user-groups-help" class="form-text mt-0"><f:translate key="users.field.groups.help" /></p>
+            <f:for each="{groupOptions}" as="group">
+                <div class="form-check">
+                    <f:form.checkbox
+                        name="user[groups]"
+                        multiple="true"
+                        value="{group.uid}"
+                        checked="{group.selected}"
+                        id="pn-user-group-{group.uid}"
+                        class="form-check-input" />
+                    <label class="form-check-label" for="pn-user-group-{group.uid}">{group.title}</label>
+                </div>
+            </f:for>
+            <f:render section="Error" arguments="{field: 'groups', errors: errors}" />
+        </fieldset>
+
+        <div class="d-flex gap-2">
+            <f:form.submit value="{f:translate(key: 'users.save')}" class="btn btn-primary" />
+            <f:link.action action="list" class="btn btn-default"><f:translate key="users.cancel" /></f:link.action>
+        </div>
+    </f:form>
+</f:section>
+
+<f:section name="Error">
+    <f:if condition="{errors.{field}}">
+        <p id="pn-user-{field}-error" class="invalid-feedback d-block"><f:translate key="users.error.{field}.{errors.{field}}" /></p>
+    </f:if>
+</f:section>
+
+<f:section name="DescribedBy"><f:spaceless><f:if condition="{help}">pn-user-{field}-help</f:if> <f:if condition="{errors.{field}}">pn-user-{field}-error</f:if></f:spaceless></f:section>
+
+</html>

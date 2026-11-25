@@ -1,0 +1,8 @@
+"be_groups"
+,"uid","pid","title","hidden","deleted","tx_pnutilities_assignable"
+,1,0,"Editors",0,0,1
+,2,0,"User managers",0,0,0
+,3,0,"Agency",0,0,0
+,4,0,"Hidden assignable",1,0,1
+,5,0,"Deleted assignable",0,1,1
+,6,0,"Authors",0,0,1

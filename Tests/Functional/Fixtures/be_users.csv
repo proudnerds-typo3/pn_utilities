@@ -1,11 +1,16 @@
 "be_users"
-,"uid","pid","username","realName","email","admin","disable","deleted","usergroup","password","lastlogin"
-,1,0,"admin","Admin","admin@example.com",1,0,0,"1","$argon2i$x",0
-,2,0,"manager","Manager","manager@example.com",0,0,0,"2,1","$argon2i$x",0
-,3,0,"editor","Editor","editor@example.com",0,0,0,"1","$argon2i$x",1750000000
-,4,0,"mixed","Mixed","mixed@example.com",0,0,0,"1,3","$argon2i$x",0
-,5,0,"nogroups","No groups","nogroups@example.com",0,0,0,"","$argon2i$x",0
-,6,0,"_cli_","","",0,0,0,"1","$argon2i$x",0
-,7,0,"removed","Removed","removed@example.com",0,0,1,"1","$argon2i$x",0
-,8,0,"editor-disabled","Disabled","disabled@example.com",0,1,0,"1,6","$argon2i$x",0
-,9,0,"hiddengroup","Hidden group","hiddengroup@example.com",0,0,0,"4","$argon2i$x",0
+,"uid","pid","username","realName","email","admin","disable","deleted","usergroup","password","lastlogin","db_mountpoints","file_mountpoints","userMods","allowed_languages","TSconfig","file_permissions","options","workspace_perms"
+,1,0,"admin","Admin","admin@example.com",1,0,0,"1","$argon2i$x",0,"","","","","","",0,0
+,2,0,"manager","Manager","manager@example.com",0,0,0,"2,1","$argon2i$x",0,"","","","","","",0,0
+,3,0,"editor","Editor","editor@example.com",0,0,0,"1","$argon2i$x",1750000000,"","","","","","readFolder,writeFolder,addFolder,renameFolder,moveFolder,deleteFolder,readFile,writeFile,addFile,renameFile,replaceFile,moveFile,copyFile,deleteFile",3,1
+,4,0,"mixed","Mixed","mixed@example.com",0,0,0,"1,3","$argon2i$x",0,"","","","","","",0,0
+,5,0,"nogroups","No groups","nogroups@example.com",0,0,0,"","$argon2i$x",0,"","","","","","",0,0
+,6,0,"_cli_","","",0,0,0,"1","$argon2i$x",0,"","","","","","",0,0
+,7,0,"removed","Removed","removed@example.com",0,0,1,"1","$argon2i$x",0,"","","","","","",0,0
+,8,0,"editor-disabled","Disabled","disabled@example.com",0,1,0,"1,6","$argon2i$x",0,"","","","","","",0,0
+,9,0,"hiddengroup","Hidden group","hiddengroup@example.com",0,0,0,"4","$argon2i$x",0,"","","","","","",0,0
+,10,0,"own-db-mount","Own DB mount","dbmount@example.com",0,0,0,"1","$argon2i$x",0,"1","","","","","",0,0
+,11,0,"own-file-mount","Own file mount","filemount@example.com",0,0,0,"1","$argon2i$x",0,"","1","","","","",0,0
+,12,0,"own-modules","Own modules","modules@example.com",0,0,0,"1","$argon2i$x",0,"","","web_list","","","",0,0
+,13,0,"own-languages","Own languages","languages@example.com",0,0,0,"1","$argon2i$x",0,"","","","0,1","","",0,0
+,14,0,"own-tsconfig","Own TSconfig","tsconfig@example.com",0,0,0,"1","$argon2i$x",0,"","","","","options.clearCache.all = 1","",0,0

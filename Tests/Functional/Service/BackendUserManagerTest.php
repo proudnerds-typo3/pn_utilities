@@ -68,6 +68,11 @@ final class BackendUserManagerTest extends FunctionalTestCase
             'reserved username' => [6],
             'deleted' => [7],
             'hidden group' => [9],
+            'own DB mount' => [10],
+            'own file mount' => [11],
+            'own modules' => [12],
+            'own languages' => [13],
+            'own TSconfig' => [14],
             'unknown' => [999],
         ];
     }
@@ -127,12 +132,25 @@ final class BackendUserManagerTest extends FunctionalTestCase
         self::assertSame([], $this->manager()->validate($input));
     }
 
-    public function testExistingUserMayKeepOwnEmail(): void
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function ignoredEmailProvider(): array
     {
-        $user = $this->editor();
-        $input = UserInput::fromArray(['realName' => 'Editor', 'email' => 'editor@example.com', 'groups' => ['1']]);
+        return [
+            'own address' => ['editor@example.com'],
+            'empty' => [''],
+            'invalid' => ['not-an-email'],
+            'taken' => ['admin@example.com'],
+        ];
+    }
 
-        self::assertSame([], $this->manager()->validate($input, $user));
+    #[DataProvider('ignoredEmailProvider')]
+    public function testEmailOfExistingUserIsNotValidated(string $email): void
+    {
+        $input = UserInput::fromArray(['realName' => 'Editor', 'email' => $email, 'groups' => ['1']]);
+
+        self::assertSame([], $this->manager()->validate($input, $this->editor()));
     }
 
     public function testCreatesNonAdminUserWithUnknownPassword(): void
@@ -151,16 +169,16 @@ final class BackendUserManagerTest extends FunctionalTestCase
         self::assertNotNull($this->manager()->findManageableByUid($uid, self::MANAGER));
     }
 
-    public function testUpdateChangesDetailsButNotUsername(): void
+    public function testUpdateChangesNameAndGroupsButNotUsernameOrEmail(): void
     {
-        $input = UserInput::fromArray(['username' => 'hijack', 'realName' => 'Renamed', 'email' => 'renamed@example.com', 'groups' => ['6']]);
+        $input = UserInput::fromArray(['username' => 'hijack', 'realName' => 'Renamed', 'email' => 'hijack@example.com', 'groups' => ['6']]);
 
         $this->manager()->update($this->editor(), $input, $this->actor);
 
         $row = $this->row(3);
         self::assertSame('editor', $row['username']);
+        self::assertSame('editor@example.com', $row['email']);
         self::assertSame('Renamed', $row['realName']);
-        self::assertSame('renamed@example.com', $row['email']);
         self::assertSame('6', $row['usergroup']);
     }
 

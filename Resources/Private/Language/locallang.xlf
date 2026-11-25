@@ -54,11 +54,29 @@
 			<trans-unit id="none" resname="none">
 				<source>No pages found.</source>
 			</trans-unit>
+			<trans-unit id="pagination.label" resname="pagination.label">
+				<source>Result pages</source>
+			</trans-unit>
+			<trans-unit id="pagination.first" resname="pagination.first">
+				<source>First</source>
+			</trans-unit>
+			<trans-unit id="pagination.previous" resname="pagination.previous">
+				<source>Previous</source>
+			</trans-unit>
+			<trans-unit id="pagination.next" resname="pagination.next">
+				<source>Next</source>
+			</trans-unit>
+			<trans-unit id="pagination.last" resname="pagination.last">
+				<source>Last</source>
+			</trans-unit>
+			<trans-unit id="pagination.status" resname="pagination.status">
+				<source>Page %1$d of %2$d, rows %3$d–%4$d</source>
+			</trans-unit>
 			<trans-unit id="users.title" resname="users.title">
 				<source>Backend users</source>
 			</trans-unit>
 			<trans-unit id="users.intro" resname="users.intro">
-				<source>Create and manage backend users. You only see users whose groups are all marked as assignable by an administrator.</source>
+				<source>Create and manage backend users. You only see users whose groups are all marked as assignable by an administrator, and who have no permissions of their own on top of their groups.</source>
 			</trans-unit>
 			<trans-unit id="users.passwordResetDisabled" resname="users.passwordResetDisabled">
 				<source>Password reset by email is switched off in this installation ([BE][passwordReset]). New users cannot set a password until an administrator switches it on.</source>
@@ -89,6 +107,9 @@
 			</trans-unit>
 			<trans-unit id="users.field.email" resname="users.field.email">
 				<source>Email address</source>
+			</trans-unit>
+			<trans-unit id="users.field.email.readonly" resname="users.field.email.readonly">
+				<source>The email address cannot be changed here. Ask an administrator.</source>
 			</trans-unit>
 			<trans-unit id="users.field.email.help" resname="users.field.email.help">
 				<source>The link to set a password is sent to this address. Each address can be used by one user only.</source>

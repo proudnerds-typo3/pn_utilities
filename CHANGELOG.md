@@ -7,6 +7,20 @@ Versions follow the TYPO3 core version the extension targets.
 
 ## [Unreleased]
 
+### Security
+
+- **Administration > Backend users**: the email address of an existing user
+  can no longer be changed. A user manager could set it to their own address,
+  send the password reset link there and log in as that user.
+- **Administration > Backend users**: users with permissions on their own
+  record (DB or file mounts, modules, languages or TSconfig) are no longer
+  listed, so taking over or editing them cannot extend a manager's rights.
+
+### Changed
+
+- **Content > Tools** shows 100 pages per page, and only builds frontend links
+  for the pages it shows.
+
 ## [14.3.0] – 2026-11-25
 
 First release as a separate package; earlier history comes from the

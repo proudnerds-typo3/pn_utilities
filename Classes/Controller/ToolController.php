@@ -13,6 +13,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Pagination\ArrayPaginator;
+use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -22,6 +24,7 @@ final class ToolController extends ActionController
 {
     public const DEFAULT_DAYS = 182;
     public const MAX_DAYS = 36500;
+    public const ITEMS_PER_PAGE = 100;
 
     public function __construct(
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
@@ -38,24 +41,46 @@ final class ToolController extends ActionController
         return self::DEFAULT_DAYS;
     }
 
+    /**
+     * The paginator moves a number beyond the last page back to the last page itself.
+     */
+    public static function normalizePageNumber(mixed $value): int
+    {
+        if (is_int($value) || (is_string($value) && is_numeric($value))) {
+            return max(1, (int)$value);
+        }
+        return 1;
+    }
+
     public function indexAction(): ResponseInterface
     {
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $page = $this->readSelectedPage();
         $days = self::normalizeDays($this->request->hasArgument('days') ? $this->request->getArgument('days') : null);
 
-        $rows = [];
+        $stalePages = [];
         if ($page !== null) {
             $now = (int)$this->context->getPropertyFromAspect('date', 'timestamp');
-            foreach ($this->stalePagesFinder->find((int)$page['uid'], $now - $days * 86400) as $stalePage) {
-                $rows[] = ['page' => $stalePage, 'uri' => $this->buildFrontendUri($stalePage)];
-            }
+            $stalePages = $this->stalePagesFinder->find((int)$page['uid'], $now - $days * 86400);
+        }
+
+        $paginator = new ArrayPaginator(
+            $stalePages,
+            self::normalizePageNumber($this->request->hasArgument('currentPage') ? $this->request->getArgument('currentPage') : null),
+            self::ITEMS_PER_PAGE,
+        );
+        $rows = [];
+        foreach ($paginator->getPaginatedItems() as $stalePage) {
+            $rows[] = ['page' => $stalePage, 'uri' => $this->buildFrontendUri($stalePage)];
         }
 
         $moduleTemplate->assignMultiple([
             'page' => $page,
             'days' => $days,
+            'total' => count($stalePages),
             'rows' => $rows,
+            'paginator' => $paginator,
+            'pagination' => new SimplePagination($paginator),
         ]);
         return $moduleTemplate->renderResponse('Tool/Index');
     }

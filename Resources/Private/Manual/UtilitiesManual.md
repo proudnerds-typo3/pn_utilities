@@ -61,7 +61,8 @@ berichten zijn.
 | Taal-ID | De taal van de regel. `0` is de standaardtaal. |
 | Acties | Opent de pagina in de module **Content > Layout** |
 
-Boven de tabel staat hoeveel pagina's in de gekozen termijn niet zijn gewijzigd.
+Boven de tabel staat hoeveel pagina's in de gekozen termijn niet zijn gewijzigd. De tabel
+toont 100 regels tegelijk; met **Vorige** en **Volgende** onder de tabel blader je verder.
 
 ### Wat je met de lijst doet
 
@@ -92,7 +93,9 @@ nodig.
 
 Je ziet alleen gebruikers van wie **alle** groepen toewijsbaar zijn. Beheerders (admins),
 gebruikers zonder groep, gebruikers met een groep die niet toewijsbaar is en je eigen
-account staan niet in de lijst en kun je niet aanpassen.
+account staan niet in de lijst en kun je niet aanpassen. Dat geldt ook voor gebruikers
+die naast hun groepen eigen rechten hebben, zoals een eigen startpunt in de paginaboom,
+eigen bestandsmappen, modules, talen of TSconfig.
 
 ### Een gebruiker aanmaken
 
@@ -110,7 +113,7 @@ In de kolom **Acties** staan per gebruiker:
 
 | Knop | Wat hij doet |
 | --- | --- |
-| Potlood | Naam, e-mailadres en groepen aanpassen. De gebruikersnaam blijft gelijk. |
+| Potlood | Naam en groepen aanpassen. Gebruikersnaam en e-mailadres blijven gelijk; een ander e-mailadres stelt een beheerder in. |
 | Schakelaar | De gebruiker uit- of inschakelen. Een uitgeschakelde gebruiker kan niet inloggen. |
 | Envelop | Een nieuwe link sturen om een wachtwoord in te stellen |
 | Prullenbak | De gebruiker verwijderen, na een bevestiging |

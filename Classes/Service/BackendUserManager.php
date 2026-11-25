@@ -24,11 +24,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Lets non-admins manage backend users without lifting the core's adminOnly restriction on be_users.
  * Writes bypass the DataHandler, so every guard that matters lives here: a managed user is never an
- * admin, and only ever holds groups an admin has marked as assignable.
+ * admin, has no permissions on the user record itself, and only ever holds groups an admin has marked
+ * as assignable. The email address is set once: changing it would let a manager send the password
+ * reset link to themselves and log in as that user.
  */
 final readonly class BackendUserManager
 {
     public const ASSIGNABLE_FIELD = 'tx_pnutilities_assignable';
+
+    /**
+     * file_permissions, options and workspace_perms are left out: the core fills them by default for
+     * every user, so they would hide every account created in the backend.
+     */
+    private const USER_PERMISSION_FIELDS = ['db_mountpoints', 'file_mountpoints', 'userMods', 'allowed_languages', 'TSconfig'];
 
     private const TABLE = 'be_users';
     private const USERNAME_MAX_LENGTH = 50;
@@ -66,8 +74,9 @@ final readonly class BackendUserManager
     }
 
     /**
-     * Users the manager may see: not an admin, not the manager, and every group they hold is assignable.
-     * Users without any group are left out, so technical and agency accounts stay out of sight.
+     * Users the manager may see: not an admin, not the manager, no permissions of their own, and every
+     * group they hold is assignable. Users without any group are left out, so technical and agency
+     * accounts stay out of sight.
      *
      * @return list<ManagedUser>
      */
@@ -116,7 +125,7 @@ final readonly class BackendUserManager
                 $errors['username'] = 'invalid';
             } elseif (mb_strlen($input->username) > self::USERNAME_MAX_LENGTH) {
                 $errors['username'] = 'tooLong';
-            } elseif ($this->isTaken('username', $input->username, null)) {
+            } elseif ($this->isTaken('username', $input->username)) {
                 $errors['username'] = 'taken';
             }
         }
@@ -125,13 +134,15 @@ final readonly class BackendUserManager
             $errors['realName'] = 'tooLong';
         }
 
-        if ($input->email === '') {
-            $errors['email'] = 'required';
-        } elseif (!GeneralUtility::validEmail($input->email) || mb_strlen($input->email) > self::EMAIL_MAX_LENGTH) {
-            $errors['email'] = 'invalid';
-        } elseif ($this->isTaken('email', $input->email, $existing?->uid)) {
-            // The core password reset refuses to send a link when an address belongs to more than one user.
-            $errors['email'] = 'taken';
+        if ($existing === null) {
+            if ($input->email === '') {
+                $errors['email'] = 'required';
+            } elseif (!GeneralUtility::validEmail($input->email) || mb_strlen($input->email) > self::EMAIL_MAX_LENGTH) {
+                $errors['email'] = 'invalid';
+            } elseif ($this->isTaken('email', $input->email)) {
+                // The core password reset refuses to send a link when an address belongs to more than one user.
+                $errors['email'] = 'taken';
+            }
         }
 
         if ($input->groupUids === []) {
@@ -175,7 +186,6 @@ final readonly class BackendUserManager
     {
         $this->write($user, [
             'realName' => $input->realName,
-            'email' => $input->email,
             'usergroup' => implode(',', $input->groupUids),
         ]);
         $this->referenceIndex->updateRefIndexTable(self::TABLE, $user->uid);
@@ -215,7 +225,7 @@ final readonly class BackendUserManager
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE);
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         return $queryBuilder
-            ->select('uid', 'username', 'realName', 'email', 'disable', 'admin', 'usergroup', 'lastlogin')
+            ->select('uid', 'username', 'realName', 'email', 'disable', 'admin', 'usergroup', 'lastlogin', ...self::USER_PERMISSION_FIELDS)
             ->from(self::TABLE)
             ->where($queryBuilder->expr()->eq('admin', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)));
     }
@@ -229,11 +239,16 @@ final readonly class BackendUserManager
         if ((int)$row['admin'] !== 0 || (int)$row['uid'] === $managerUid || str_starts_with((string)$row['username'], '_')) {
             return false;
         }
+        foreach (self::USER_PERMISSION_FIELDS as $field) {
+            if (trim((string)($row[$field] ?? '')) !== '') {
+                return false;
+            }
+        }
         $groups = GeneralUtility::intExplode(',', (string)$row['usergroup'], true);
         return $groups !== [] && array_diff($groups, array_keys($assignable)) === [];
     }
 
-    private function isTaken(string $field, string $value, ?int $exceptUid): bool
+    private function isTaken(string $field, string $value): bool
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE);
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -241,9 +256,6 @@ final readonly class BackendUserManager
             ->count('uid')
             ->from(self::TABLE)
             ->where($queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($value)));
-        if ($exceptUid !== null) {
-            $queryBuilder->andWhere($queryBuilder->expr()->neq('uid', $queryBuilder->createNamedParameter($exceptUid, Connection::PARAM_INT)));
-        }
         return (int)$queryBuilder->executeQuery()->fetchOne() > 0;
     }
 

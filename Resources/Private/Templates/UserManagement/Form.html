@@ -63,16 +63,24 @@
 
         <div class="form-group mb-3">
             <label for="pn-user-email" class="form-label"><f:translate key="users.field.email" /></label>
-            <f:form.textfield
-                type="email"
-                name="user[email]"
-                id="pn-user-email"
-                value="{input.email}"
-                class="form-control{f:if(condition: errors.email, then: ' is-invalid')}"
-                required="true"
-                additionalAttributes="{maxlength: 255, autocomplete: 'off', 'aria-describedby': '{f:render(section: \'DescribedBy\', arguments: {field: \'email\', errors: errors, help: 1})}'}" />
-            <f:render section="Error" arguments="{field: 'email', errors: errors}" />
-            <p id="pn-user-email-help" class="form-text"><f:translate key="users.field.email.help" /></p>
+            <f:if condition="{user}">
+                <f:then>
+                    <input type="email" id="pn-user-email" class="form-control" value="{user.email}" readonly aria-describedby="pn-user-email-help" />
+                    <p id="pn-user-email-help" class="form-text"><f:translate key="users.field.email.readonly" /></p>
+                </f:then>
+                <f:else>
+                    <f:form.textfield
+                        type="email"
+                        name="user[email]"
+                        id="pn-user-email"
+                        value="{input.email}"
+                        class="form-control{f:if(condition: errors.email, then: ' is-invalid')}"
+                        required="true"
+                        additionalAttributes="{maxlength: 255, autocomplete: 'off', 'aria-describedby': '{f:render(section: \'DescribedBy\', arguments: {field: \'email\', errors: errors, help: 1})}'}" />
+                    <f:render section="Error" arguments="{field: 'email', errors: errors}" />
+                    <p id="pn-user-email-help" class="form-text"><f:translate key="users.field.email.help" /></p>
+                </f:else>
+            </f:if>
         </div>
 
         <fieldset class="form-group mb-3" id="pn-user-groups" tabindex="-1" aria-describedby="{f:render(section: 'DescribedBy', arguments: {field: 'groups', errors: errors, help: 1})}">

@@ -27,7 +27,7 @@
                 </div>
             </f:form>
 
-            <h2><f:translate key="total" arguments="{0: '{rows -> f:count()}', 1: days}" /></h2>
+            <h2><f:translate key="total" arguments="{0: total, 1: days}" /></h2>
 
             <f:if condition="{rows}">
                 <f:then>
@@ -73,6 +73,7 @@
                             </tbody>
                         </table>
                     </div>
+                    <f:render section="Pagination" arguments="{_all}" />
                 </f:then>
                 <f:else>
                     <p><f:translate key="none" /></p>
@@ -82,6 +83,34 @@
         <f:else>
             <p><f:translate key="error.noPageSelected" /></p>
         </f:else>
+    </f:if>
+</f:section>
+
+<f:section name="Pagination">
+    <f:if condition="{paginator.numberOfPages} > 1">
+        <nav aria-label="{f:translate(key: 'pagination.label')}">
+            <ul class="pagination">
+                <f:if condition="{pagination.previousPageNumber}">
+                    <li class="page-item">
+                        <f:link.action action="index" arguments="{days: days}" additionalParams="{id: page.uid}" class="page-link"><f:translate key="pagination.first" /></f:link.action>
+                    </li>
+                    <li class="page-item">
+                        <f:link.action action="index" arguments="{days: days, currentPage: pagination.previousPageNumber}" additionalParams="{id: page.uid}" class="page-link" rel="prev"><f:translate key="pagination.previous" /></f:link.action>
+                    </li>
+                </f:if>
+                <li class="page-item">
+                    <span class="page-link"><f:translate key="pagination.status" arguments="{0: paginator.currentPageNumber, 1: paginator.numberOfPages, 2: pagination.startRecordNumber, 3: pagination.endRecordNumber}" /></span>
+                </li>
+                <f:if condition="{pagination.nextPageNumber}">
+                    <li class="page-item">
+                        <f:link.action action="index" arguments="{days: days, currentPage: pagination.nextPageNumber}" additionalParams="{id: page.uid}" class="page-link" rel="next"><f:translate key="pagination.next" /></f:link.action>
+                    </li>
+                    <li class="page-item">
+                        <f:link.action action="index" arguments="{days: days, currentPage: pagination.lastPageNumber}" additionalParams="{id: page.uid}" class="page-link"><f:translate key="pagination.last" /></f:link.action>
+                    </li>
+                </f:if>
+            </ul>
+        </nav>
     </f:if>
 </f:section>
 

@@ -45,8 +45,11 @@ After switching `userManagement` on, update the database schema
 3. Make sure the installation can send mail.
 
 User managers only see users whose groups are *all* assignable. Admins, users
-without a group and their own account are never listed. Every change is
-written to the TYPO3 log.
+without a group, users with permissions on their own record (DB or file
+mounts, modules, languages or TSconfig) and their own account are never
+listed. The email address of an existing user can only be changed by an
+admin, so a user manager cannot redirect the password reset link to
+themselves. Every change is written to the TYPO3 log.
 
 ### Converting Powermail forms
 

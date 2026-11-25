@@ -32,4 +32,26 @@ final class ToolControllerTest extends TestCase
     {
         self::assertSame($expected, ToolController::normalizeDays($input));
     }
+
+    /**
+     * @return array<string, array{mixed, int}>
+     */
+    public static function pageNumberProvider(): array
+    {
+        return [
+            'null' => [null, 1],
+            'not a number' => ['abc', 1],
+            'zero' => ['0', 1],
+            'negative' => [-3, 1],
+            'numeric string' => ['4', 4],
+            'integer' => [4, 4],
+            'array' => [['2'], 1],
+        ];
+    }
+
+    #[DataProvider('pageNumberProvider')]
+    public function testNormalizePageNumber(mixed $input, int $expected): void
+    {
+        self::assertSame($expected, ToolController::normalizePageNumber($input));
+    }
 }

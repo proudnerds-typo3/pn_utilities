@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" target-language="nl" datatype="plaintext" original="EXT:pn_utilities/Resources/Private/Language/locallang_conf.xlf" product-name="pn_utilities">
+		<header/>
+		<body>
+			<trans-unit id="stalePages" resname="stalePages">
+				<source>Pages not edited recently: show the module Content > Tools (admins only)</source>
+				<target>Pagina's die lang niet zijn gewijzigd: toon de module Content > Tools (alleen voor admins)</target>
+			</trans-unit>
+			<trans-unit id="userManagement" resname="userManagement">
+				<source>Backend user management: show the module Administration > Backend users and the field "Assignable in user management" on backend groups. After switching it on, update the database schema.</source>
+				<target>Gebruikersbeheer: toon de module Administration > Backend-gebruikers en het veld "Toewijsbaar in gebruikersbeheer" op backend-groepen. Werk na het aanzetten het databaseschema bij.</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

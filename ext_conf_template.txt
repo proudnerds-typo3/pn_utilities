@@ -1,0 +1,5 @@
+# cat=basic/enable; type=boolean; label=LLL:EXT:pn_utilities/Resources/Private/Language/locallang_conf.xlf:stalePages
+stalePages = 1
+
+# cat=basic/enable; type=boolean; label=LLL:EXT:pn_utilities/Resources/Private/Language/locallang_conf.xlf:userManagement
+userManagement = 0

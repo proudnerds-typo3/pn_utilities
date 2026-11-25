@@ -1,11 +1,14 @@
 <?php
 
+use Proudnerds\Utilities\Configuration\Feature;
 use Proudnerds\Utilities\Controller\ToolController;
 use Proudnerds\Utilities\Controller\UserManagementController;
 use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessLifetime;
 
-return [
-    'web_utilitiesTools' => [
+$modules = [];
+
+if (Feature::StalePages->isEnabled()) {
+    $modules['web_utilitiesTools'] = [
         'parent' => 'content',
         'access' => 'admin',
         'iconIdentifier' => 'module-pn-utilities',
@@ -17,8 +20,11 @@ return [
                 'index',
             ],
         ],
-    ],
-    'pn_user_management' => [
+    ];
+}
+
+if (Feature::UserManagement->isEnabled()) {
+    $modules['pn_user_management'] = [
         'parent' => 'admin',
         'access' => 'user',
         'workspaces' => 'live',
@@ -45,5 +51,7 @@ return [
                 'lifetime' => AccessLifetime::medium,
             ],
         ],
-    ],
-];
+    ];
+}
+
+return $modules;

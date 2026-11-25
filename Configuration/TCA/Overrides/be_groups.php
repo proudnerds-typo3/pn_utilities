@@ -1,9 +1,14 @@
 <?php
 
+use Proudnerds\Utilities\Configuration\Feature;
 use Proudnerds\Utilities\Service\BackendUserManager;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 defined('TYPO3') or die();
+
+if (!Feature::UserManagement->isEnabled()) {
+    return;
+}
 
 ExtensionManagementUtility::addTCAcolumns('be_groups', [
     BackendUserManager::ASSIGNABLE_FIELD => [

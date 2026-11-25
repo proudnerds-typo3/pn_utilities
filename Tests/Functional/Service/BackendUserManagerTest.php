@@ -21,6 +21,14 @@ final class BackendUserManagerTest extends FunctionalTestCase
         'proudnerds/pn-utilities',
     ];
 
+    protected array $configurationToUseInTestInstance = [
+        'EXTENSIONS' => [
+            'pn_utilities' => [
+                'userManagement' => '1',
+            ],
+        ],
+    ];
+
     private BackendUserAuthentication $actor;
 
     protected function setUp(): void

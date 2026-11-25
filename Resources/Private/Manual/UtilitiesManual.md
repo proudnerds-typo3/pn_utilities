@@ -1,5 +1,5 @@
 ---
-version: '2.1'
+version: '2.2'
 date: '2026-11-25'
 ---
 
@@ -11,6 +11,12 @@ Deze extensie bevat twee hulpmiddelen:
   beheerders (admins) zien deze module.
 - **Administration > Backend-gebruikers**, waarmee gebruikers zonder adminrechten andere
   backend-gebruikers kunnen beheren.
+
+Per installatie bepaal je welke hulpmiddelen beschikbaar zijn, in **Admin > Settings >
+Extension Configuration > pn_utilities**. De lijst met pagina's staat standaard aan,
+gebruikersbeheer standaard uit. Werk na het aanzetten van gebruikersbeheer het
+databaseschema bij, met **Analyze Database Structure** in de Install Tool of met
+`typo3 database:updateschema`.
 
 ## Pagina's die lang niet zijn gewijzigd
 
@@ -71,13 +77,15 @@ nodig.
 
 ### Instellen (door een beheerder)
 
-1. Open de groepen die gebruikersbeheerders mogen uitdelen, bijvoorbeeld **Redacteur**.
+1. Zet gebruikersbeheer aan in de extensieconfiguratie (zie boven) en werk het
+   databaseschema bij.
+2. Open de groepen die gebruikersbeheerders mogen uitdelen, bijvoorbeeld **Redacteur**.
    Zet op het tabblad **General** (Algemeen) het vinkje **Toewijsbaar in gebruikersbeheer** aan.
    Wie zo'n groep krijgt, krijgt alle rechten van die groep en van haar subgroepen.
-2. Geef de groep van de gebruikersbeheerders toegang tot de module
+3. Geef de groep van de gebruikersbeheerders toegang tot de module
    **Backend-gebruikers** (tabblad **Module Permissions**). Markeer die groep zelf niet als
    toewijsbaar, tenzij gebruikersbeheerders andere gebruikersbeheerders mogen aanmaken.
-3. Controleer dat de installatie e-mail kan versturen. Nieuwe gebruikers stellen hun
+4. Controleer dat de installatie e-mail kan versturen. Nieuwe gebruikers stellen hun
    wachtwoord in via een link in hun mailbox.
 
 ### Welke gebruikers je ziet

@@ -1,9 +1,15 @@
 {
     "name": "proudnerds/pn-utilities",
-    "description": "Additional utilities",
     "type": "typo3-cms-extension",
-    "license": "GPL-2.0+",
-    "version": "14.3.0",
+    "description": "Backend tools for TYPO3: a list of pages that have not been changed for a while, and backend user management for non-admins.",
+    "keywords": [
+        "TYPO3 CMS",
+        "backend users",
+        "user management",
+        "content audit"
+    ],
+    "homepage": "https://github.com/proudnerds-typo3/pn_utilities",
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "Proud Nerds",
@@ -11,23 +17,51 @@
             "homepage": "https://www.proudnerds.com/"
         }
     ],
-    "extra": {
-        "typo3/cms": {
-            "extension-key": "pn_utilities"
-        }
-    },
-    "replace": {
-        "pn_utilities": "self.version",
-        "typo3-ter/pn_utilities": "self.version"
+    "support": {
+        "issues": "https://github.com/proudnerds-typo3/pn_utilities/issues",
+        "source": "https://github.com/proudnerds-typo3/pn_utilities"
     },
     "require": {
         "php": "^8.2",
+        "proudnerds/pn-backend-manual": "^1.2",
+        "typo3/cms-backend": "^14.3",
         "typo3/cms-core": "^14.3",
-        "proudnerds/pn-backend-manual": "^1.2"
+        "typo3/cms-extbase": "^14.3",
+        "typo3/cms-fluid": "^14.3"
+    },
+    "require-dev": {
+        "typo3/testing-framework": "^9.7"
+    },
+    "replace": {
+        "typo3-ter/pn_utilities": "self.version"
     },
     "autoload": {
         "psr-4": {
             "Proudnerds\\Utilities\\": "Classes/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Proudnerds\\Utilities\\Tests\\": "Tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "typo3/class-alias-loader": true,
+            "typo3/cms-composer-installers": true
+        },
+        "bin-dir": ".Build/bin",
+        "sort-packages": true,
+        "vendor-dir": ".Build/vendor"
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "pn_utilities",
+            "version": "14.3.0",
+            "Package": {
+                "providesPackages": {}
+            },
+            "web-dir": ".Build/public"
         }
     }
 }

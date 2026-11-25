@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * as assignable. The email address is set once: changing it would let a manager send the password
  * reset link to themselves and log in as that user.
  */
-final readonly class BackendUserManager
+final class BackendUserManager
 {
     public const ASSIGNABLE_FIELD = 'tx_pnutilities_assignable';
 
@@ -42,20 +42,34 @@ final readonly class BackendUserManager
     private const USERNAME_MAX_LENGTH = 50;
     private const REAL_NAME_MAX_LENGTH = 80;
     private const EMAIL_MAX_LENGTH = 255;
+    private const USERNAME_PATTERN = '/^[a-z0-9.@-][a-z0-9._@-]*$/';
+
+    /**
+     * @var array<int, string>|null
+     */
+    private ?array $assignableGroups = null;
 
     public function __construct(
-        private ConnectionPool $connectionPool,
-        private PasswordHashFactory $passwordHashFactory,
-        private Random $random,
-        private ReferenceIndex $referenceIndex,
-        private LogEntryRepository $logEntryRepository,
-        private Context $context,
+        private readonly ConnectionPool $connectionPool,
+        private readonly PasswordHashFactory $passwordHashFactory,
+        private readonly Random $random,
+        private readonly ReferenceIndex $referenceIndex,
+        private readonly LogEntryRepository $logEntryRepository,
+        private readonly Context $context,
     ) {}
 
     /**
      * @return array<int, string> uid => title
      */
     public function getAssignableGroups(): array
+    {
+        return $this->assignableGroups ??= $this->fetchAssignableGroups();
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    private function fetchAssignableGroups(): array
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('be_groups');
         $rows = $queryBuilder
@@ -121,7 +135,7 @@ final readonly class BackendUserManager
         if ($existing === null) {
             if ($input->username === '') {
                 $errors['username'] = 'required';
-            } elseif (preg_match('/\s/u', $input->username) === 1 || str_starts_with($input->username, '_')) {
+            } elseif (preg_match(self::USERNAME_PATTERN, $input->username) !== 1) {
                 $errors['username'] = 'invalid';
             } elseif (mb_strlen($input->username) > self::USERNAME_MAX_LENGTH) {
                 $errors['username'] = 'tooLong';

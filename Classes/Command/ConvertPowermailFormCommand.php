@@ -27,11 +27,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * data-migration helper after the extension has been removed.
  *
  * Usage:
- *   ddev typo3 pn:powermail:convert            # list all available forms
- *   ddev typo3 pn:powermail:convert 2          # convert form with uid 2
- *   ddev typo3 pn:powermail:convert --all      # convert every non-deleted form
- *   ddev typo3 pn:powermail:convert 2 --force  # overwrite an existing file
- *   ddev typo3 pn:powermail:convert 2 --path=EXT:my_sitepackage/Resources/Private/Forms/
+ *   typo3 pn:powermail:convert                                       # list all available forms
+ *   typo3 pn:powermail:convert 2 --path=EXT:my_site/Resources/Private/Forms/
+ *   typo3 pn:powermail:convert --all --path=EXT:my_site/Resources/Private/Forms/
+ *   typo3 pn:powermail:convert 2 --dry-run                           # print the YAML
  */
 #[AsCommand(
     name: 'pn:powermail:convert',
@@ -40,10 +39,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 final class ConvertPowermailFormCommand extends Command
 {
     /**
-     * Must be listed in the site package's persistenceManager.allowedExtensionPaths,
-     * or the backend form manager does not show the generated forms.
+     * @var array<int, array<array-key, mixed>>|null form uid => settings.flexform of its first plugin
      */
-    private const DEFAULT_FORMS_PATH = 'EXT:base_sitepackage/Resources/Private/Forms/';
+    private ?array $flexFormsByFormUid = null;
 
     /**
      * Maps the Powermail field "type" column to an ext:form element type.
@@ -80,7 +78,12 @@ final class ConvertPowermailFormCommand extends Command
             ->addOption('all', null, InputOption::VALUE_NONE, 'Convert all non-deleted forms')
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Overwrite the target file if it already exists')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Print the resulting YAML instead of writing a file')
-            ->addOption('path', null, InputOption::VALUE_REQUIRED, 'Target folder for the *.form.yaml files', self::DEFAULT_FORMS_PATH);
+            ->addOption(
+                'path',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Target folder for the *.form.yaml files, e.g. EXT:my_site/Resources/Private/Forms/. It must be listed in the form persistenceManager.allowedExtensionPaths.',
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -88,7 +91,8 @@ final class ConvertPowermailFormCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $force = (bool)$input->getOption('force');
         $dryRun = (bool)$input->getOption('dry-run');
-        $formsPath = rtrim((string)$input->getOption('path'), '/') . '/';
+        $path = trim((string)$input->getOption('path'));
+        $formsPath = $path === '' ? '' : rtrim($path, '/') . '/';
 
         $forms = $this->fetchForms();
         if ($forms === []) {
@@ -103,8 +107,13 @@ final class ConvertPowermailFormCommand extends Command
                 $forms,
             );
             $io->table(['UID', 'Title', 'PID'], $rows);
-            $io->writeln('Run again with a form UID, e.g. <info>pn:powermail:convert ' . $forms[0]['uid'] . '</info>, or <info>--all</info>.');
+            $io->writeln('Run again with a form UID, e.g. <info>pn:powermail:convert ' . $forms[0]['uid'] . ' --path=EXT:my_site/Resources/Private/Forms/</info>, or <info>--all</info>.');
             return Command::SUCCESS;
+        }
+
+        if ($formsPath === '' && !$dryRun) {
+            $io->error('Pass the target folder with --path, e.g. --path=EXT:my_site/Resources/Private/Forms/, or use --dry-run.');
+            return Command::FAILURE;
         }
 
         if (!$input->getOption('all')) {
@@ -298,32 +307,30 @@ final class ConvertPowermailFormCommand extends Command
     }
 
     /**
-     * Fallback recipient when the FlexForm holds no receiver address: the
-     * legacy project's powermailDevelopContextEmail if it still has one, then
-     * MAIL.defaultMailFromAddress.
+     * Fallback recipient when the FlexForm holds no receiver address.
      */
     private function defaultRecipientEmail(): string
     {
-        foreach ([
-            $GLOBALS['TYPO3_CONF_VARS']['EXT']['powermailDevelopContextEmail'] ?? '',
-            $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] ?? '',
-        ] as $email) {
-            $email = trim((string)$email);
-            if ($email !== '') {
-                return $email;
-            }
-        }
-
-        return 'no-reply@example.com';
+        $email = trim((string)($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] ?? ''));
+        return $email !== '' ? $email : 'no-reply@example.com';
     }
 
     /**
-     * Find the Powermail plugin (tt_content.powermail_pi1) that references the
-     * given form and return its parsed "settings.flexform" array, or null.
+     * The parsed "settings.flexform" of the first Powermail plugin (tt_content.powermail_pi1)
+     * that references the given form, or null.
      *
      * @return array<array-key, mixed>|null
      */
     private function fetchFlexFormConfig(int $formUid): ?array
+    {
+        $this->flexFormsByFormUid ??= $this->fetchFlexFormsByFormUid();
+        return $this->flexFormsByFormUid[$formUid] ?? null;
+    }
+
+    /**
+     * @return array<int, array<array-key, mixed>>
+     */
+    private function fetchFlexFormsByFormUid(): array
     {
         $qb = $this->connectionPool->getQueryBuilderForTable('tt_content');
         $qb->getRestrictions()->removeAll();
@@ -337,6 +344,7 @@ final class ConvertPowermailFormCommand extends Command
             ->executeQuery()
             ->fetchAllAssociative();
 
+        $flexForms = [];
         foreach ($rows as $row) {
             $xml = (string)($row['pi_flexform'] ?? '');
             if ($xml === '') {
@@ -347,12 +355,10 @@ final class ConvertPowermailFormCommand extends Command
             if (!is_array($flexform)) {
                 continue;
             }
-            if ((int)($flexform['main']['form'] ?? 0) === $formUid) {
-                return $flexform;
-            }
+            $flexForms[(int)($flexform['main']['form'] ?? 0)] ??= $flexform;
         }
 
-        return null;
+        return $flexForms;
     }
 
     /**

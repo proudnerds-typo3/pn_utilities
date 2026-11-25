@@ -44,6 +44,16 @@ final class BackendUserManagerTest extends FunctionalTestCase
         self::assertSame([6 => 'Authors', 1 => 'Editors'], $this->manager()->getAssignableGroups());
     }
 
+    public function testAssignableGroupsAreQueriedOncePerInstance(): void
+    {
+        $manager = $this->manager();
+        $manager->getAssignableGroups();
+        $this->get(ConnectionPool::class)->getConnectionForTable('be_groups')
+            ->update('be_groups', [BackendUserManager::ASSIGNABLE_FIELD => 0], ['uid' => 6]);
+
+        self::assertSame([6 => 'Authors', 1 => 'Editors'], $manager->getAssignableGroups());
+    }
+
     public function testListsOnlyUsersWhoseGroupsAreAllAssignable(): void
     {
         self::assertSame([3, 8], $this->uids($this->manager()->findManageable(self::MANAGER)));
@@ -102,6 +112,9 @@ final class BackendUserManagerTest extends FunctionalTestCase
             'empty username' => [['username' => ' '] + $valid, ['username' => 'required']],
             'username with space' => [['username' => 'new user'] + $valid, ['username' => 'invalid']],
             'reserved username' => [['username' => '_new'] + $valid, ['username' => 'invalid']],
+            'username with markup' => [['username' => '<b>new'] + $valid, ['username' => 'invalid']],
+            'username with quote' => [['username' => 'new"user'] + $valid, ['username' => 'invalid']],
+            'username with accent' => [['username' => 'josé'] + $valid, ['username' => 'invalid']],
             'long username' => [['username' => str_repeat('a', 51)] + $valid, ['username' => 'tooLong']],
             'username taken' => [['username' => 'Editor'] + $valid, ['username' => 'taken']],
             'username of admin taken' => [['username' => 'admin'] + $valid, ['username' => 'taken']],
@@ -123,6 +136,13 @@ final class BackendUserManagerTest extends FunctionalTestCase
     public function testRejectsInvalidInput(array $data, array $expected): void
     {
         self::assertSame($expected, $this->manager()->validate(UserInput::fromArray($data)));
+    }
+
+    public function testAcceptsUsernameWithDigitsDotsDashesAndAt(): void
+    {
+        $input = UserInput::fromArray(['username' => 'Jan.de-Vries_2@pn', 'email' => 'jan@example.com', 'groups' => ['1']]);
+
+        self::assertSame([], $this->manager()->validate($input));
     }
 
     public function testDeletedUserDoesNotBlockUsernameOrEmail(): void

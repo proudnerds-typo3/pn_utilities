@@ -1,5 +1,5 @@
 ---
-version: '2.2'
+version: '2.3'
 date: '2026-11-25'
 ---
 
@@ -83,10 +83,14 @@ nodig.
 2. Open de groepen die gebruikersbeheerders mogen uitdelen, bijvoorbeeld **Redacteur**.
    Zet op het tabblad **General** (Algemeen) het vinkje **Toewijsbaar in gebruikersbeheer** aan.
    Wie zo'n groep krijgt, krijgt alle rechten van die groep en van haar subgroepen.
-3. Geef de groep van de gebruikersbeheerders toegang tot de module
+3. Geef in die groepen ook de bestandsrechten (**File operation permissions**). Een
+   gebruiker die je in deze module aanmaakt, heeft zelf geen bestandsrechten; een
+   gebruiker die via het gewone backendformulier is aangemaakt, krijgt er standaard de
+   meeste.
+4. Geef de groep van de gebruikersbeheerders toegang tot de module
    **Backend-gebruikers** (tabblad **Module Permissions**). Markeer die groep zelf niet als
    toewijsbaar, tenzij gebruikersbeheerders andere gebruikersbeheerders mogen aanmaken.
-4. Controleer dat de installatie e-mail kan versturen. Nieuwe gebruikers stellen hun
+5. Controleer dat de installatie e-mail kan versturen. Nieuwe gebruikers stellen hun
    wachtwoord in via een link in hun mailbox.
 
 ### Welke gebruikers je ziet
@@ -100,8 +104,9 @@ eigen bestandsmappen, modules, talen of TSconfig.
 ### Een gebruiker aanmaken
 
 1. Klik op **Nieuwe gebruiker**.
-2. Vul een gebruikersnaam, naam en e-mailadres in en kies een of meer groepen. Elk
-   e-mailadres kan maar bij één gebruiker horen.
+2. Vul een gebruikersnaam, naam en e-mailadres in en kies een of meer groepen. De
+   gebruikersnaam bestaat uit kleine letters, cijfers en `.` `_` `@` `-`, en begint niet
+   met `_`. Elk e-mailadres kan maar bij één gebruiker horen.
 3. Klik op **Opslaan**. De nieuwe gebruiker krijgt een e-mail met een link om zelf een
    wachtwoord in te stellen. Die link is twee uur geldig.
 

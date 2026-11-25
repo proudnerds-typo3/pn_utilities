@@ -7,7 +7,6 @@ namespace Proudnerds\Utilities\Controller;
 use Proudnerds\Utilities\Domain\StalePage;
 use Proudnerds\Utilities\Service\StalePagesFinder;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -19,7 +18,6 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
-#[AsController]
 final class ToolController extends ActionController
 {
     public const DEFAULT_DAYS = 182;

@@ -41,8 +41,11 @@ After switching `userManagement` on, update the database schema
 1. Mark the groups that user managers may hand out as *Assignable in user
    management* (tab **General** of the backend group). A user who gets such a
    group gets all permissions of that group and its subgroups.
-2. Give the group of the user managers access to the module **Backend users**.
-3. Make sure the installation can send mail.
+2. Grant file operations (*File operation permissions*) through those groups.
+   Users created in the module get none on their own record, unlike users
+   created in the backend form, which get most of them by default.
+3. Give the group of the user managers access to the module **Backend users**.
+4. Make sure the installation can send mail.
 
 User managers only see users whose groups are *all* assignable. Admins, users
 without a group, users with permissions on their own record (DB or file
@@ -51,19 +54,24 @@ listed. The email address of an existing user can only be changed by an
 admin, so a user manager cannot redirect the password reset link to
 themselves. Every change is written to the TYPO3 log.
 
+The module asks user managers to confirm their password (sudo mode) and
+remembers the confirmation for 15 minutes. The core skips this step in the
+`Development` application context, so test it in another context.
+
 ### Converting Powermail forms
 
 ```bash
 typo3 pn:powermail:convert                 # list the forms
-typo3 pn:powermail:convert 2               # convert form uid 2
-typo3 pn:powermail:convert --all           # convert every form
+typo3 pn:powermail:convert 2 --dry-run     # print the YAML of form uid 2
 typo3 pn:powermail:convert 2 --path=EXT:my_sitepackage/Resources/Private/Forms/
+typo3 pn:powermail:convert --all --path=EXT:my_sitepackage/Resources/Private/Forms/
 ```
 
-Powermail itself does not need to be installed. The default target path is
-`EXT:base_sitepackage/Resources/Private/Forms/`; installations without that
-package must pass `--path`, and the path must be listed in the form
-`persistenceManager.allowedExtensionPaths`.
+Powermail itself does not need to be installed. Converting requires `--path`
+(or `--dry-run`); the path must be listed in the form
+`persistenceManager.allowedExtensionPaths`. Without a recipient in the
+Powermail plugin, the generated mail finisher uses
+`[MAIL][defaultMailFromAddress]`.
 
 ## Development
 

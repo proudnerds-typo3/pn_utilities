@@ -7,6 +7,8 @@ Versions follow the TYPO3 core version the extension targets.
 
 ## [Unreleased]
 
+## [14.3.1] – 2026-11-25
+
 ### Security
 
 - **Administration > Backend users**: the email address of an existing user
@@ -15,11 +17,20 @@ Versions follow the TYPO3 core version the extension targets.
 - **Administration > Backend users**: users with permissions on their own
   record (DB or file mounts, modules, languages or TSconfig) are no longer
   listed, so taking over or editing them cannot extend a manager's rights.
+- **Administration > Backend users**: new usernames may only contain lowercase
+  letters, digits and `. _ @ -`, and may not start with `_`.
 
 ### Changed
 
 - **Content > Tools** shows 100 pages per page, and only builds frontend links
   for the pages it shows.
+- **Content > Tools** has the module identifier `pn_stale_pages` and the path
+  `/module/pn-utilities/stale-pages`. `web_utilitiesTools` still works as a
+  route alias; bookmarks to the old URL do not.
+- `pn:powermail:convert` requires `--path` unless `--dry-run` is used; the
+  default `EXT:base_sitepackage/Resources/Private/Forms/` is gone. The
+  recipient fallback no longer reads `[EXT][powermailDevelopContextEmail]`.
+- Requires PHP 8.3, like `proudnerds/pn-backend-manual`.
 
 ## [14.3.0] – 2026-11-25
 
@@ -37,5 +48,6 @@ typo3-seed installation.
 - Command `pn:powermail:convert`
 - Editor manual as a dashboard widget
 
-[Unreleased]: https://github.com/proudnerds-typo3/pn_utilities/compare/14.3.0...HEAD
+[Unreleased]: https://github.com/proudnerds-typo3/pn_utilities/compare/14.3.1...HEAD
+[14.3.1]: https://github.com/proudnerds-typo3/pn_utilities/compare/14.3.0...14.3.1
 [14.3.0]: https://github.com/proudnerds-typo3/pn_utilities/releases/tag/14.3.0

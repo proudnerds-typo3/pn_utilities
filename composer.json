@@ -22,7 +22,7 @@
         "source": "https://github.com/proudnerds-typo3/pn_utilities"
     },
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "proudnerds/pn-backend-manual": "^1.2",
         "typo3/cms-backend": "^14.3",
         "typo3/cms-core": "^14.3",
@@ -57,7 +57,7 @@
     "extra": {
         "typo3/cms": {
             "extension-key": "pn_utilities",
-            "version": "14.3.0",
+            "version": "14.3.1",
             "Package": {
                 "providesPackages": {}
             },

@@ -97,7 +97,7 @@
 				<source>Username</source>
 			</trans-unit>
 			<trans-unit id="users.field.username.help" resname="users.field.username.help">
-				<source>Lowercase, no spaces. Cannot be changed later.</source>
+				<source>Lowercase letters, digits and . _ @ -, not starting with _. Cannot be changed later.</source>
 			</trans-unit>
 			<trans-unit id="users.field.username.readonly" resname="users.field.username.readonly">
 				<source>The username cannot be changed.</source>
@@ -166,7 +166,7 @@
 				<source>Enter a username.</source>
 			</trans-unit>
 			<trans-unit id="users.error.username.invalid" resname="users.error.username.invalid">
-				<source>The username may not contain spaces or start with an underscore.</source>
+				<source>Use only lowercase letters, digits and . _ @ -, and do not start with an underscore.</source>
 			</trans-unit>
 			<trans-unit id="users.error.username.tooLong" resname="users.error.username.tooLong">
 				<source>The username may be at most 50 characters long.</source>

@@ -128,8 +128,8 @@
 				<target>Gebruikersnaam</target>
 			</trans-unit>
 			<trans-unit id="users.field.username.help" resname="users.field.username.help">
-				<source>Lowercase, no spaces. Cannot be changed later.</source>
-				<target>Kleine letters, geen spaties. Kan later niet worden gewijzigd.</target>
+				<source>Lowercase letters, digits and . _ @ -, not starting with _. Cannot be changed later.</source>
+				<target>Kleine letters, cijfers en . _ @ -, niet beginnend met _. Kan later niet worden gewijzigd.</target>
 			</trans-unit>
 			<trans-unit id="users.field.username.readonly" resname="users.field.username.readonly">
 				<source>The username cannot be changed.</source>
@@ -220,8 +220,8 @@
 				<target>Vul een gebruikersnaam in.</target>
 			</trans-unit>
 			<trans-unit id="users.error.username.invalid" resname="users.error.username.invalid">
-				<source>The username may not contain spaces or start with an underscore.</source>
-				<target>De gebruikersnaam mag geen spaties bevatten en niet met een underscore (_) beginnen.</target>
+				<source>Use only lowercase letters, digits and . _ @ -, and do not start with an underscore.</source>
+				<target>Gebruik alleen kleine letters, cijfers en . _ @ -, en begin niet met een underscore (_).</target>
 			</trans-unit>
 			<trans-unit id="users.error.username.tooLong" resname="users.error.username.tooLong">
 				<source>The username may be at most 50 characters long.</source>

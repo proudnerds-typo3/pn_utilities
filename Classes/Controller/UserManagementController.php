@@ -8,7 +8,6 @@ use Proudnerds\Utilities\Domain\ManagedUser;
 use Proudnerds\Utilities\Domain\UserInput;
 use Proudnerds\Utilities\Service\BackendUserManager;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -20,7 +19,6 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
-#[AsController]
 final class UserManagementController extends ActionController
 {
     use AllowedMethodsTrait;

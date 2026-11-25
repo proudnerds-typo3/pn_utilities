@@ -8,9 +8,11 @@ use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessLifetime;
 $modules = [];
 
 if (Feature::StalePages->isEnabled()) {
-    $modules['web_utilitiesTools'] = [
+    $modules['pn_stale_pages'] = [
         'parent' => 'content',
         'access' => 'admin',
+        'path' => '/module/pn-utilities/stale-pages',
+        'aliases' => ['web_utilitiesTools'],
         'iconIdentifier' => 'module-pn-utilities',
         'navigationComponent' => '@typo3/backend/tree/page-tree-element',
         'labels' => 'LLL:EXT:pn_utilities/Resources/Private/Language/locallang_mod_tools.xlf',
